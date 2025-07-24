@@ -1,16 +1,14 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 
 export default function Template({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-
   return (
     <motion.div
       initial={{ y: 0, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ ease: "easeInOut", duration: 0.75 }}
+      className="h-full"
     >
       {children}
     </motion.div>

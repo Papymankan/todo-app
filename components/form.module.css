@@ -1,0 +1,8 @@
+.userIdInput {
+    padding: 4px;
+    width: 200px;
+}
+
+.userIdInput:focus {
+    outline: none;
+}

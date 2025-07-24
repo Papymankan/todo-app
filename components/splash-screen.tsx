@@ -8,7 +8,7 @@ export default function SplashScreen() {
   const [show, setShow] = useState<boolean>(true);
 
   useEffect(() => {
-    const timeOut = setTimeout(() => setShow(false), 2000);
+    const timeOut = setTimeout(() => setShow(false), 200);
     return () => clearTimeout(timeOut);
   }, []);
 
@@ -26,7 +26,7 @@ export default function SplashScreen() {
             <motion.div
               initial={{ scale: 0.5 }}
               animate={{ scale: 2 }}
-              transition={{ duration: 2, ease: "easeInOut" }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
             >
               <Image src={image} alt="Logo" width={100} height={100} />
             </motion.div>
