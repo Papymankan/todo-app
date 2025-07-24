@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
+import SplashScreen from "@/components/splash-screen";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,7 +14,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="text-cyan">{children}</body>
+      <body className="bg-cyan">
+        <div className="relative h-screen">
+          <SplashScreen />
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
