@@ -1,13 +1,26 @@
 import Form from "@/components/form";
-import React from "react";
-import styles from "@/app/page.module.css"
+import React, { Suspense } from "react";
+import styles from "@/app/page.module.css";
+import {} from "@/type";
+import TodosList from "@/components/todosList";
 
-export default function page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   return (
-    <div className="h-full flex space-x-4 px-8 py-4">
-      <div className={`rounded-xl p-5 fixed ${styles.filterBox}`}>
+    <div className="h-full flex items-start space-x-8 px-8 py-4">
+      <div className={`rounded-xl sticky top-4 p-5 ${styles.filterBox}`}>
         <h1 className="text-2xl font-bold">Filters</h1>
-        <Form/>
+        <Form />
+      </div>
+
+      <div className="flex-1 overflow-auto px-4">
+        {/* todos */}
+        <Suspense fallback={<p>Loading ...</p>}>
+          <TodosList searchParams={searchParams} />
+        </Suspense>
       </div>
     </div>
   );
