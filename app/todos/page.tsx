@@ -2,6 +2,6 @@ import React from 'react'
 
 export default function page() {
   return (
-    <div>Todos</div>
+    <div className='bg-amber-300'>Todos</div>
   )
 }
