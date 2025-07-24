@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-cyan">
+      <body>
         <div className="relative h-screen">
           <SplashScreen />
           {children}
