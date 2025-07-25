@@ -13,7 +13,7 @@ export default async function Page({
     <div className="h-full flex items-start space-x-8 px-8 py-4">
       <div className={`rounded-xl sticky top-4 p-5 ${styles.filterBox}`}>
         <h1 className="text-2xl font-bold">Filters</h1>
-        <Form />
+        <Form searchParams={searchParams}/>
       </div>
 
       <div className="flex-1 overflow-auto px-4">

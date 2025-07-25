@@ -19,13 +19,14 @@ export default async function TodosList({
     status != undefined &&
     status != "all" &&
     status != "completed" &&
-    status != "uncompleted"
+    status != "uncompleted" &&
+    status != ""
   ) {
     if (userId !== undefined) redirect(`/todos?userId=${userId}`);
     else redirect(`/todos`);
   }
 
-  if (userId !== undefined && isNaN(Number(userId))) {
+  if ((userId !== undefined && isNaN(Number(userId))) || userId == "") {
     if (status !== undefined) redirect(`/todos?status=${status}`);
     else redirect(`/todos`);
   }
