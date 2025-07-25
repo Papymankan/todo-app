@@ -1,26 +1,29 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import styles from "@/components/form.module.css";
-import { redirect } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
-export default async function Form({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
-  const { userId, status } = await searchParams;
+export default function Form() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  async function submit(formData: FormData) {
-    "use server";
-    const status = formData.get("status");
-    const userId = formData.get("userId");
+  const [userId, setUserId] = useState(searchParams.get("userId") || "");
+  const [status, setStatus] = useState(searchParams.get("status") || "all");
 
-    if (status && userId) redirect(`/todos?status=${status}&userId=${userId}`);
-    else if (userId) redirect(`/todos?userId=${userId}`);
-    else if (status) redirect(`/todos?status=${status}`);
-  }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const params = new URLSearchParams();
+    if (userId) params.set("userId", userId);
+    if (status && status !== "all") params.set("status", status);
+    else if (status === "all") params.delete("status");
+
+    router.push(`/todos?${params.toString()}`);
+  };
 
   return (
-    <form action={submit}>
+    <form onSubmit={handleSubmit}>
       <div className="flex flex-col mt-4">
         <label htmlFor="userIdInput" className="text-sm">
           user id :
@@ -32,7 +35,8 @@ export default async function Form({
           id="userIdInput"
           className={`border-b ${styles.userIdInput} border-blue text-sm`}
           placeholder="set empty to no filter"
-          defaultValue={userId}
+          value={userId}
+          onChange={(e) => setUserId(e.target.value)}
         />
       </div>
 
@@ -42,7 +46,8 @@ export default async function Form({
           name="status"
           value="all"
           id="status-3"
-          defaultChecked={!status || status === "all"}
+          checked={status === "all"}
+          onChange={() => setStatus("all")}
         />
         <label htmlFor="status-3">all</label>
       </div>
@@ -53,7 +58,8 @@ export default async function Form({
           name="status"
           value="completed"
           id="status-1"
-          defaultChecked={status === "completed"}
+          checked={status === "completed"}
+          onChange={() => setStatus("completed")}
         />
         <label htmlFor="status-1">completed</label>
       </div>
@@ -64,7 +70,8 @@ export default async function Form({
           name="status"
           value="uncompleted"
           id="status-2"
-          defaultChecked={status === "uncompleted"}
+          checked={status === "uncompleted"}
+          onChange={() => setStatus("uncompleted")}
         />
         <label htmlFor="status-2">uncompleted</label>
       </div>

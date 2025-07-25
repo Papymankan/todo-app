@@ -5,11 +5,7 @@ import {} from "@/type";
 import TodosList from "@/components/todosList";
 import Header from "@/components/header";
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
+export default async function Page() {
   return (
     <>
       <Header />
@@ -17,13 +13,12 @@ export default async function Page({
       <div className="h-full flex items-start space-x-8 min-h-screen">
         <div className={`rounded-xl sticky top-4 p-5 ${styles.filterBox}`}>
           <h1 className="text-2xl font-bold">Filters</h1>
-          <Form searchParams={searchParams} />
+          <Form />
         </div>
 
         <div className="flex-1 overflow-auto px-4">
-          {/* todos */}
           <Suspense fallback={<p>Loading ...</p>}>
-            <TodosList searchParams={searchParams} />
+            <TodosList />
           </Suspense>
         </div>
       </div>

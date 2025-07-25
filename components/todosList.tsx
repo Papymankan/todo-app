@@ -1,42 +1,54 @@
+"use client";
+
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { todo } from "@/type";
-import { redirect } from "next/navigation";
-import React from "react";
 import styles from "@/app/page.module.css";
 
-export default async function TodosList({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
-  const res = await fetch("https://jsonplaceholder.typicode.com/todos", {
-    cache: "no-store",
-  });
-  const todos: todo[] = await res.json();
+export default function TodosList() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  const { userId, status } = await searchParams;
+  const [todos, setTodos] = useState<todo[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  if (
-    status != undefined &&
-    status != "all" &&
-    status != "completed" &&
-    status != "uncompleted" &&
-    status != ""
-  ) {
-    if (userId !== undefined) redirect(`/todos?userId=${userId}`);
-    else redirect(`/todos`);
-  }
+  useEffect(() => {
+    const fetchTodos = async () => {
+      setLoading(true);
+      const res = await fetch("https://jsonplaceholder.typicode.com/todos");
+      const data = await res.json();
+      setTodos(data);
+      setLoading(false);
+    };
 
-  if ((userId !== undefined && isNaN(Number(userId))) || userId == "") {
-    if (status !== undefined) redirect(`/todos?status=${status}`);
-    else redirect(`/todos`);
-  }
+    fetchTodos();
+  }, []);
+
+  const status = searchParams.get("status");
+  const userId = searchParams.get("userId");
+
+  useEffect(() => {
+    if (
+      status !== null &&
+      status !== "all" &&
+      status !== "completed" &&
+      status !== "uncompleted" &&
+      status !== ""
+    ) {
+      if (userId !== null) router.push(`/todos?userId=${userId}`);
+      else router.push(`/todos`);
+    }
+
+    if ((userId !== null && isNaN(Number(userId))) || userId === "") {
+      if (status !== null) router.push(`/todos?status=${status}`);
+      else router.push(`/todos`);
+    }
+  }, [status, userId, router]);
 
   const filteredTodos = todos.filter((todo) => {
-    const matchesUser =
-      userId !== undefined ? todo.userId === Number(userId) : true;
-
+    const matchesUser = userId ? todo.userId === Number(userId) : true;
     const matchesStatus =
-      status === undefined ||
+      !status ||
       status === "all" ||
       (status === "completed" && todo.completed) ||
       (status === "uncompleted" && !todo.completed);
@@ -44,26 +56,35 @@ export default async function TodosList({
     return matchesUser && matchesStatus;
   });
 
+  if (loading) return <p>Loading todos...</p>;
+
   return (
     <>
-      {filteredTodos.map((todo) => (
-        <div
-          className={`w-full py-4 px-6 rounded-xl ${styles.todo} mb-6`}
-          key={todo.id}
-        >
-          <div className="w-full flex justify-between">
-            <p className="text-xl font-bold">{todo.title}</p>
-            <p>{todo.completed ? "✅" : "❌"}</p>
-          </div>
+      {filteredTodos.length > 0 ? (
+        filteredTodos.map((todo) => (
+          <div
+            className={`w-full py-4 px-6 rounded-xl ${styles.todo} mb-6`}
+            key={todo.id}
+          >
+            <div className="w-full flex justify-between">
+              <p className="text-xl font-bold">{todo.title}</p>
+              <p>{todo.completed ? "✅" : "❌"}</p>
+            </div>
 
-          <p className="mt-4 text-sm">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. In sint
-            numquam aliquid, nisi ad fuga maiores quibusdam voluptatem, quos
-            quia beatae laborum mollitia! Obcaecati iusto, maiores accusamus
-            voluptatum hic iste?
-          </p>
+            <p className="mt-4 text-sm">
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. In sint
+              numquam aliquid, nisi ad fuga maiores quibusdam voluptatem, quos
+              quia beatae laborum mollitia! Obcaecati iusto, maiores accusamus
+              voluptatum hic iste?
+            </p>
+          </div>
+        ))
+      ) : (
+        <div className="w-full flex flex-col items-center">
+          <h1 className=" text-3xl font-bold">No Todo Found</h1>
+          <p className="font-thin">try other filters</p>
         </div>
-      ))}
+      )}
     </>
   );
 }
