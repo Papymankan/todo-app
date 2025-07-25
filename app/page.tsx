@@ -3,7 +3,7 @@ import AnimatedButton from "@/components/animated-button";
 export default function Home() {
   return (
     <>
-      <main className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-50">
+      <main className="flex flex-col items-center justify-center min-h-screen p-6">
         <h1 className="text-5xl font-extrabold mb-6 text-blue">
           Simplify your to-dos, amplify your results.
         </h1>

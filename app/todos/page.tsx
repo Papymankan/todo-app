@@ -3,6 +3,7 @@ import React, { Suspense } from "react";
 import styles from "@/app/page.module.css";
 import {} from "@/type";
 import TodosList from "@/components/todosList";
+import Header from "@/components/header";
 
 export default async function Page({
   searchParams,
@@ -10,18 +11,22 @@ export default async function Page({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   return (
-    <div className="h-full flex items-start space-x-8 px-8 py-4">
-      <div className={`rounded-xl sticky top-4 p-5 ${styles.filterBox}`}>
-        <h1 className="text-2xl font-bold">Filters</h1>
-        <Form searchParams={searchParams}/>
-      </div>
+    <>
+      <Header />
 
-      <div className="flex-1 overflow-auto px-4">
-        {/* todos */}
-        <Suspense fallback={<p>Loading ...</p>}>
-          <TodosList searchParams={searchParams} />
-        </Suspense>
+      <div className="h-full flex items-start space-x-8 min-h-screen">
+        <div className={`rounded-xl sticky top-4 p-5 ${styles.filterBox}`}>
+          <h1 className="text-2xl font-bold">Filters</h1>
+          <Form searchParams={searchParams} />
+        </div>
+
+        <div className="flex-1 overflow-auto px-4">
+          {/* todos */}
+          <Suspense fallback={<p>Loading ...</p>}>
+            <TodosList searchParams={searchParams} />
+          </Suspense>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

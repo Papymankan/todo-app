@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="relative">
+        <div className="relative bg-gray-50">
           <SplashScreen />
           {children}
         </div>
