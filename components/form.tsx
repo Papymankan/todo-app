@@ -32,6 +32,7 @@ export default async function Form({
           id="userIdInput"
           className={`border-b ${styles.userIdInput} border-blue text-sm`}
           placeholder="set empty to no filter"
+          defaultValue={userId}
         />
       </div>
 
